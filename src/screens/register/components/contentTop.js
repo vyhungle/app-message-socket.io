@@ -1,19 +1,17 @@
 import React from 'react';
 import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import {appColor} from '../../../assets/colors';
-
 import {VIE} from '../../../assets/language';
-import IconLogo from '../../../assets/images/logo.svg';
 
 const {width, height} = Dimensions.get('window');
 
 export default function contentTop() {
   return (
     <View style={styles.Container}>
-      {/* <IconLogo style={styles.Logo} /> */}
+      {/* <IconLogo /> */}
       <View style={styles.BoxBottom}>
-        <Text style={styles.Title}>{VIE.login.title}</Text>
-        <Text style={styles.Hint}>{VIE.login.body}</Text>
+        <Text style={styles.Title}>{VIE.signup.title}</Text>
+        <Text style={styles.Hint}>{VIE.signup.body}</Text>
       </View>
     </View>
   );
@@ -22,7 +20,7 @@ export default function contentTop() {
 const styles = StyleSheet.create({
   Container: {
     width: width,
-    height: height / 4,
+    height: height / 5,
     zIndex: 10,
     opacity: 1,
     display: 'flex',
@@ -44,9 +42,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: appColor.hint,
     marginTop: 10,
-  },
-  Logo: {
-    position: 'absolute',
-    left: 20,
   },
 });

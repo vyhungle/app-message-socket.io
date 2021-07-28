@@ -4,13 +4,15 @@ import {appColor} from '../../assets/colors';
 import {NativeBaseProvider} from 'native-base';
 
 import TopBar from '../../components/topBar';
+import SingleItem from './components/singleItem';
 
 export default function chat() {
   return (
     <NativeBaseProvider>
       <View style={styles.Container}>
         <TopBar />
-        <Text>chat screen</Text>
+        <SingleItem />
+        <SingleItem />
       </View>
     </NativeBaseProvider>
   );

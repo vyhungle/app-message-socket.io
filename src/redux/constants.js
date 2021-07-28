@@ -1,1 +1,1 @@
-export const apiUrl = 'http://10.0.0.13:4000/api';
+export const apiUrl = 'https://server-app-chats.herokuapp.com/api';

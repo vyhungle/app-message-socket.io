@@ -7,30 +7,38 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {appColor} from '../../../assets/colors';
 import {Formik} from 'formik';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+// import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import {KeyboardAvoidingView} from 'native-base';
 
 import {loginPending} from '../../../redux/slice/authSlice';
-import {appColor} from '../../../assets/colors';
+
 import {VIE} from '../../../assets/language';
 
-export default function FormLogin() {
-  const {errors, isLoading} = useSelector(state => state.auth);
+export default function FormSignUp() {
+  const {registerErrors, isLoading} = useSelector(state => state.auth);
+  const errors = registerErrors;
   const dispatch = useDispatch();
   const navigation = useNavigation();
   return (
-    <View style={styles.Container}>
-      <Formik
-        initialValues={{
-          username: '',
-          password: '',
-        }}
-        onSubmit={values => {
-          dispatch(loginPending({values}));
-        }}>
-        {formProps => (
-          <View>
+    // <KeyboardAwareScrollView>
+    <Formik
+      initialValues={{
+        username: '',
+        password: '',
+        confirmPassword: '',
+        email: '',
+      }}
+      onSubmit={values => {
+        // console.log(values);
+        dispatch(loginPending({values}));
+      }}>
+      {formProps => (
+        <KeyboardAvoidingView>
+          <View style={styles.Container}>
             <Text style={styles.Lable}>{VIE.login.username}</Text>
             <TextInput
               style={styles.Field}
@@ -40,17 +48,35 @@ export default function FormLogin() {
             {errors.username && (
               <Text style={styles.Error}>{errors.username}</Text>
             )}
-            <Text style={styles.Lable}>{VIE.login.password}</Text>
+            <Text style={styles.Lable}>{VIE.signup.email}</Text>
             <TextInput
               style={styles.Field}
               secureTextEntry={true}
+              onChangeText={formProps.handleChange('email')}
+              value={formProps.values.email}
+            />
+            {errors.email && <Text style={styles.Error}>{errors.email}</Text>}
+
+            <Text style={styles.Lable}>{VIE.signup.password}</Text>
+            <TextInput
+              style={styles.Field}
               onChangeText={formProps.handleChange('password')}
               value={formProps.values.password}
             />
             {errors.password && (
               <Text style={styles.Error}>{errors.password}</Text>
             )}
-            <Text style={styles.TextForgot}>{VIE.login.forgot}</Text>
+
+            <Text style={styles.Lable}>{VIE.signup.confirm}</Text>
+            <TextInput
+              style={styles.Field}
+              onChangeText={formProps.handleChange('confirmPassword')}
+              value={formProps.values.confirmPassword}
+            />
+            {errors.confirmPassword && (
+              <Text style={styles.Error}>{errors.confirmPassword}</Text>
+            )}
+
             <TouchableOpacity
               style={styles.ButtonLogin}
               onPress={() => formProps.handleSubmit()}>
@@ -58,28 +84,30 @@ export default function FormLogin() {
                 {isLoading ? (
                   <ActivityIndicator size="large" color="white" />
                 ) : (
-                  VIE.login.textButton
+                  VIE.signup.textButton
                 )}
               </Text>
             </TouchableOpacity>
             <View style={styles.BoxBottom}>
-              <Text style={styles.TextBottom}>{VIE.login.textBottom}</Text>
+              <Text style={styles.TextBottom}>{VIE.signup.textBottom}</Text>
               <TouchableOpacity
                 style={styles.BoxTextSU}
-                onPress={() => navigation.navigate('RegisterScreen')}>
-                <Text style={styles.TextSignup}> {VIE.login.signup}</Text>
+                onPress={() => navigation.navigate('LoginScreen')}>
+                <Text style={styles.TextSignup}> {VIE.signup.login}</Text>
               </TouchableOpacity>
             </View>
           </View>
-        )}
-      </Formik>
-    </View>
+        </KeyboardAvoidingView>
+      )}
+    </Formik>
+    // </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   Container: {
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   Lable: {
     marginTop: 30,

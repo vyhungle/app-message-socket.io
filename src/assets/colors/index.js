@@ -1,5 +1,5 @@
 export const appColor = {
-  primary: '#53B175',
+  primary: '#005FFF',
   secondary: '#82C69A',
   bg: '#FCFCFC',
   hint: '#7A7A7A',
@@ -9,4 +9,5 @@ export const appColor = {
   field: '#F2F3F2',
   buttonX: '#C5C5C5',
   bannerDot: '#A9A29D',
+  lightGray: '#7A7A7A',
 };
