@@ -17,6 +17,7 @@ import {
   registerFail,
   logout,
 } from '../slice/authSlice';
+import {roomPending} from '../slice/roomSlice';
 
 function* getUser() {
   var token = yield call(getAccessToken);
@@ -27,6 +28,7 @@ function* getUser() {
     if (data.success) {
       var user = data.user;
       yield put({type: authUser.type, payload: {user: user}});
+      yield put({type: roomPending.type});
     }
   } else yield call(setAuthToken, null);
 }

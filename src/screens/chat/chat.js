@@ -1,18 +1,30 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {appColor} from '../../assets/colors';
-import {NativeBaseProvider} from 'native-base';
+import {Actionsheet, useDisclose, NativeBaseProvider} from 'native-base';
 
 import TopBar from '../../components/topBar';
-import SingleItem from './components/singleItem';
+import ListRoom from './components/listRoom';
+import ContentBottomSheet from './components/contentBottomSheet';
 
-export default function chat() {
+export default function Chat() {
+  const {isOpen, onOpen, onClose} = useDisclose();
+
+  const BottomSheet = () => {
+    return (
+      <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator={true}>
+        <Actionsheet.Content>
+          <ContentBottomSheet />
+        </Actionsheet.Content>
+      </Actionsheet>
+    );
+  };
   return (
     <NativeBaseProvider>
       <View style={styles.Container}>
         <TopBar />
-        <SingleItem />
-        <SingleItem />
+        <ListRoom onOpen={onOpen} />
+        {BottomSheet()}
       </View>
     </NativeBaseProvider>
   );

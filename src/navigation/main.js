@@ -10,6 +10,7 @@ import {navigationRef} from './rootNavigation';
 import DrawerTab from './drawer';
 import LoginScreen from '../screens/login/login';
 import RegisterScreen from '../screens/register/register';
+import MessageScreen from '../screens/chat/message';
 
 export default function AppNavigator() {
   const {isAuth} = useSelector(s => s.auth);
@@ -23,6 +24,7 @@ export default function AppNavigator() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}>
           <RootStack.Screen name="DrawerTab" component={DrawerTab} />
+          <RootStack.Screen name="MessageScreen" component={MessageScreen} />
         </RootStack.Navigator>
       ) : (
         <RootStack.Navigator
