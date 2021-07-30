@@ -1,36 +1,58 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   TextInput,
+  Keyboard,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
+import {Formik} from 'formik';
+
 import {appColor} from '../../../assets/colors';
 import {constants} from '../../../components/constants';
 import AttachIcon from '../../../assets/images/attachIcon.svg';
 import PathIcon from '../../../assets/images/pathIcon.svg';
 import SendIcon from '../../../assets/images/sendIcon.svg';
+import {sendMessagePending} from '../../../redux/slice/roomSlice';
 
-export default function formMessage() {
+export default function FormMessage(props) {
+  const dispatch = useDispatch();
   return (
-    <View style={styles.Container}>
-      <TouchableOpacity style={styles.BoxIcon}>
-        <AttachIcon />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.BoxIcon}>
-        <PathIcon />
-      </TouchableOpacity>
-      <TextInput
-        style={styles.Field}
-        placeholder="Send a message"
-        placeholderTextColor={appColor.lightGray}
-      />
+    <Formik
+      initialValues={{
+        body: '',
+      }}
+      onSubmit={values => {
+        Keyboard.dismiss();
+        dispatch(sendMessagePending({_id: props._id, values: values}));
+        values.body = '';
+      }}>
+      {formProps => (
+        <View style={styles.Container}>
+          <TouchableOpacity style={styles.BoxIcon}>
+            <AttachIcon />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.BoxIcon}>
+            <PathIcon />
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.BoxSendIcon}>
-        <SendIcon />
-      </TouchableOpacity>
-    </View>
+          <TextInput
+            style={styles.Field}
+            placeholder="Send a message"
+            placeholderTextColor={appColor.lightGray}
+            onChangeText={formProps.handleChange('body')}
+            value={formProps.values.body}
+          />
+
+          <TouchableOpacity
+            style={styles.BoxSendIcon}
+            onPress={() => formProps.handleSubmit()}>
+            <SendIcon />
+          </TouchableOpacity>
+        </View>
+      )}
+    </Formik>
   );
 }
 
@@ -46,6 +68,7 @@ const styles = StyleSheet.create({
     borderTopColor: appColor.border,
     borderTopWidth: 1,
     width: constants.width,
+    backgroundColor: appColor.bg,
   },
   BoxIcon: {
     width: 24,

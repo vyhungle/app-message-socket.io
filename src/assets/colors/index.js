@@ -10,4 +10,6 @@ export const appColor = {
   buttonX: '#C5C5C5',
   bannerDot: '#A9A29D',
   lightGray: '#7A7A7A',
+  messageRight: '#ECEBEB',
+  messageLeft: '#FFFFFF',
 };

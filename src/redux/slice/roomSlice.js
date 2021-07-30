@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   isLoading: false,
   isLoadingMessage: false,
+  isSend: false,
   room: [],
   message: [],
 };
@@ -32,6 +33,17 @@ const roomSlice = createSlice({
     messageFail: state => {
       state.isLoadingMessage = false;
     },
+
+    sendMessagePending: state => {
+      state.isSend = true;
+    },
+    sendMessageSuccess: (state, {payload}) => {
+      state.isSend = false;
+      state.message.push(payload.message);
+    },
+    sendMessageFail: state => {
+      state.isSend = false;
+    },
   },
 });
 
@@ -42,5 +54,8 @@ export const {
   messagePending,
   messageSuccess,
   messageFail,
+  sendMessagePending,
+  sendMessageSuccess,
+  sendMessageFail,
 } = roomSlice.actions;
 export default roomSlice.reducer;

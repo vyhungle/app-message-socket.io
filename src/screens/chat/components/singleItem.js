@@ -19,7 +19,9 @@ export default function SingleItem(props) {
 
   const goMessage = () => {
     dispatch(messagePending({_id: props.data._id}));
-    navigation.navigate('MessageScreen');
+    navigation.navigate('MessageScreen', {
+      _id: props.data._id,
+    });
   };
   return (
     <TouchableOpacity

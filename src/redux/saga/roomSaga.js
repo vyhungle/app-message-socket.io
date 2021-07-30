@@ -9,6 +9,9 @@ import {
   roomFail,
   roomPending,
   roomSuccess,
+  sendMessageFail,
+  sendMessagePending,
+  sendMessageSuccess,
 } from '../slice/roomSlice';
 
 function* getRoom() {
@@ -29,9 +32,27 @@ function* getMessage(action) {
   }
 }
 
+function* sendMessage(action) {
+  const {payload} = action;
+  const {data} = yield call(
+    axios.post,
+    `${apiUrl}/message/${payload._id}/send-message`,
+    payload.values,
+  );
+  if (data.success) {
+    yield put({
+      type: sendMessageSuccess.type,
+      payload: {message: data.sendContent},
+    });
+  } else {
+    yield put({type: sendMessageFail.type});
+  }
+}
+
 function* workerRoomSaga() {
   yield takeEvery(roomPending.type, getRoom);
   yield takeEvery(messagePending.type, getMessage);
+  yield takeEvery(sendMessagePending.type, sendMessage);
 }
 
 export default function* roomSaga() {
