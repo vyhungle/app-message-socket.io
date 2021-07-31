@@ -34,7 +34,7 @@ export default function ListMessage(props) {
         scrollViewRef.current.scrollToEnd({animated: false})
       }
       data={props.message}
-      keyExtractor={item => item._id}
+      keyExtractor={(item, index) => index}
       renderItem={item => (
         <SingleMessage
           message={item.item}

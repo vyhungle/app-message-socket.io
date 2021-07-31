@@ -25,7 +25,13 @@ export default function FormMessage(props) {
       }}
       onSubmit={values => {
         Keyboard.dismiss();
-        dispatch(sendMessagePending({_id: props._id, values: values}));
+        props.sendMessage(values, props._id, props.user._id);
+        dispatch(
+          sendMessagePending({
+            values: values,
+            _id: props._id,
+          }),
+        );
         values.body = '';
       }}>
       {formProps => (

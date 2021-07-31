@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {Platform} from 'react-native';
 
 const initialState = {
   isLoading: false,
@@ -34,6 +35,10 @@ const roomSlice = createSlice({
       state.isLoadingMessage = false;
     },
 
+    messageReceive: (state, {payload}) => {
+      state.message.push(payload.message);
+    },
+
     sendMessagePending: state => {
       state.isSend = true;
     },
@@ -57,5 +62,6 @@ export const {
   sendMessagePending,
   sendMessageSuccess,
   sendMessageFail,
+  messageReceive,
 } = roomSlice.actions;
 export default roomSlice.reducer;
