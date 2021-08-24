@@ -27,7 +27,7 @@ export default function singleMessage(props) {
           <Text style={styles.Body}>{props.message.body}</Text>
         </TouchableOpacity>
         <Text style={styles.DateTextMy}>
-          {moment(props.message.createdAt).startOf('hour').fromNow()}
+          {moment(props.message.createdAt).calendar()}
         </Text>
       </View>
     );
@@ -63,7 +63,7 @@ export default function singleMessage(props) {
             <Text style={styles.Body}>{props.message.body}</Text>
           </TouchableOpacity>
           <Text style={styles.DateTextFriend}>
-            {moment(props.message.createdAt).startOf('hour').fromNow()}
+            {moment(props.message.createdAt).calendar()}
           </Text>
         </View>
       </View>

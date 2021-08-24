@@ -3,7 +3,10 @@ import {StyleSheet, Text, TouchableOpacity, Image, View} from 'react-native';
 import {appColor} from '../../../assets/colors';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+
 import {messagePending} from '../../../redux/slice/roomSlice';
+import {getUser, joinRoom, receiveUser} from '../../../utils/socket';
+import {singleUserSuccess} from '../../../redux/slice/userOnlineSlice';
 
 export default function SingleItem(props) {
   const {user} = useSelector(s => s.auth);
@@ -17,8 +20,33 @@ export default function SingleItem(props) {
     return res;
   };
 
+  const [singleUser, setSingleUser] = React.useState(null);
+  React.useEffect(() => {
+    receiveUser(setSingleUser);
+  }, []);
+
+  React.useEffect(() => {
+    if (singleUser !== null) {
+      dispatch(
+        singleUserSuccess({
+          user: singleUser,
+        }),
+      );
+    }
+  }, [singleUser, dispatch]);
+
+  const sendUser = () => {
+    let userId =
+      user._id === props.data.users[0]._id
+        ? props.data.users[1]._id
+        : props.data.users[0]._id;
+    getUser(userId);
+  };
+
   const goMessage = () => {
     dispatch(messagePending({_id: props.data._id}));
+    joinRoom(props.data._id);
+    sendUser();
     navigation.navigate('MessageScreen', {
       _id: props.data._id,
     });
@@ -38,7 +66,7 @@ export default function SingleItem(props) {
       </TouchableOpacity>
 
       <View style={styles.BoxBody}>
-        <Text style={styles.Name}>{getName()}</Text>
+        <Text style={styles.Name}>{getName() + ' ' + props.online}</Text>
         <Text style={styles.Body} numberOfLines={1}>
           The weather will be perfect for the str for the str
         </Text>

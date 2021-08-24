@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import {io} from 'socket.io-client';
 import {useDispatch} from 'react-redux';
 
 import TopBar from './components/topBarMessage';
@@ -9,7 +8,7 @@ import FormMessage from './components/formMessage';
 import {appColor} from '../../assets/colors';
 import {useSelector} from 'react-redux';
 import ListMessage from './components/listMessage';
-import {apiSocket} from '../../redux/constants';
+import {receiveMessage} from '../../utils/socket';
 import {messageReceive} from '../../redux/slice/roomSlice';
 
 export default function Message() {
@@ -17,36 +16,31 @@ export default function Message() {
   const {_id} = route.params;
   const {message} = useSelector(s => s.room);
   const {user} = useSelector(s => s.auth);
-  const socket = React.useRef();
   const dispatch = useDispatch();
+  const [content, setContent] = React.useState(null);
+  const userOnline = useSelector(s => s.userOnline);
+
+  // console.log(userOnline.user);
 
   React.useEffect(() => {
-    socket.current = io(apiSocket);
-    socket.current.emit('join-room', _id);
-    socket.current.on('receiveMessage', (data, userId) => {
-      console.log(data, userId);
+    receiveMessage(setContent);
+  }, []);
+
+  React.useEffect(() => {
+    if (content !== null) {
       dispatch(
         messageReceive({
-          message: {
-            body: data.body,
-            user: {
-              _id: userId,
-            },
-            createdAt: new Date().toISOString(),
-          },
+          message: content,
         }),
       );
-    });
-  }, [_id, socket, dispatch]);
+    }
+  }, [content, dispatch]);
 
-  const sendMessage = (data, _id, userId) => {
-    socket.current.emit('sendMessage', data, _id, userId);
-  };
   return (
     <View style={styles.Container}>
       <TopBar />
       <ListMessage message={message} user={user} />
-      <FormMessage _id={_id} sendMessage={sendMessage} user={user} />
+      <FormMessage _id={_id} user={user} />
     </View>
   );
 }

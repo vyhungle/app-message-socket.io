@@ -15,6 +15,7 @@ import AttachIcon from '../../../assets/images/attachIcon.svg';
 import PathIcon from '../../../assets/images/pathIcon.svg';
 import SendIcon from '../../../assets/images/sendIcon.svg';
 import {sendMessagePending} from '../../../redux/slice/roomSlice';
+import {sendMessage} from '../../../utils/socket';
 
 export default function FormMessage(props) {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ export default function FormMessage(props) {
       }}
       onSubmit={values => {
         Keyboard.dismiss();
-        props.sendMessage(values, props._id, props.user._id);
+        sendMessage(values, props._id, props.user._id);
         dispatch(
           sendMessagePending({
             values: values,
